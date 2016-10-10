@@ -1,52 +1,57 @@
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
 $(document).ready(function() {
-	var currencies = {
-		'NG': {'NGN': 'NGN', 'USD': 'USD', 'GBP': 'GBP', 'EUR': 'EUR'},
-		'GH': {'GHS': 'GHS', 'USD': 'USD'},
-		'US': {'USD': 'USD'},
-		'KE': {'KES': 'KES', 'USD': 'USD'},
-		'UK': {'GBP': 'GBP', 'USD': 'USD', 'EUR': 'EUR'}
-	};
+    var max_fields = 10, wrapper = $(".params"), add_button = $(".add_param"), myModal = $("#myModal");
+    var x = 1;
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper).append('<div class="form-group"><label class="control-label">#' + x + '</label><div><input type="text" placeholder="Insert Parameter Key" class="form-control param_key" name="paramKey" required /></div><div><input type="text" placeholder="Insert Parameter Value" class="form-control param_value" name="paramValue" required /></div><a href="#" class="remove_param">Remove</a></div>');
+        }
+    });
+    $(wrapper).on("click", ".remove_param", function(e) {
+        e.preventDefault();
+        $(this).parent("div").remove();
+        x--;
+    });
+    $("#form_params").submit(function(e) {
+        e.preventDefault();
+        $("#loadingdiv").show();
 
-	populateCurrencies();
-
-	$(function() {
-		$('select[name="country"]').change(function() {
-			$('select[name="currency"]').html('');
-			populateCurrencies();
-		});
-	});
-
-	function populateCurrencies() {
-		var selectedCountry = $('select[name="country"]').val(),
-		append = '<option value="" selected disabled>Currency</option>';
-
-	  	$.each(currencies, function (country, currency) {
-	    	if (selectedCountry === country) {
-	      		$.each(currency, function (i, obj) {
-	        	append += '<option value="'+i+'">'+obj+'</option>';
-	      		});
-	    	}
-	  	});
-
-	  	$('select[name="currency"]').html(append);
-	}
-
-	$(function() {
-		$('select[name="authmodel"]').change(function() {
-			if ($('select[name="authmodel"]').val() === "NOAUTH") {
-				$('.form-card').find('#authfield').prop({type: "hidden"}).prop({name: ""}).prop({placeholder: ""});
-			} else if ($('select[name="authmodel"]').val() === "PIN") {
-				$('.form-card').find('#authfield').prop({type: "text"}).prop({name: "pin"}).prop({placeholder: "Enter PIN"});
-			} else if ($('select[name="authmodel"]').val() === "BVN") {
-				$('.form-card').find('#authfield').prop({type: "text"}).prop({name: "bvn"}).prop({placeholder: "Enter BVN"});
-			} else if ($('select[name="authmodel"]').val() === "RANDOM_DEBIT") {
-				$('.form-card').find('#authfield').prop({type: "hidden"}).prop({name: ""}).prop({placeholder: ""});
-			} else if ($('select[name="authmodel"]').val() === "VBVSECURECODE") {
-				$('.form-card').find('#authfield').prop({type: "text"}).prop({name: "responseurl"}).prop({placeholder: "Enter Response URL"});
-			} else {
-				$('.form-card').find('#authfield').prop({type: "hidden"}).prop({name: ""}).prop({placeholder: ""});
-			}
-		});
-	});
-
+        function encryptParam (key, param) {
+			$.ajax({
+			    url: '/process/encrypt', 
+			    method: 'post',
+			    data: $('#form_params').serializeObject(), 
+			    success: function(data, status) {
+			    	myModal.find("#encryptedPayload").html(JSON.stringify(data, null, 4));
+			    	myModal.modal("show");
+                	setTimeout(function() {
+                    	$("#loadingdiv").hide();
+                	}, 2000);
+			    }
+			});
+        }
+        encryptParam(1, 2);
+    });
+    $("#copyButton").on("click", function(e) {
+        e.preventDefault();
+        $("#encryptedPayload").select();
+		document.execCommand('copy');
+    });
 });
