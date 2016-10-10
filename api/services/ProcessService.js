@@ -4,7 +4,7 @@ var utf8 = require('utf8');
 
 module.exports = {
 	hexToString: function(hex) {
-		var hex = hex_String.toString();
+		var hex = hex.toString();
 		var str = '';
 
 		for (var n = 0; n < hex.length; n += 2) {
@@ -36,7 +36,7 @@ module.exports = {
 		decipher.finish();
 
 		var decrypted = decipher.output; 
-		
+
 		return this.hexToString(decrypted.toHex());
 	}
 };

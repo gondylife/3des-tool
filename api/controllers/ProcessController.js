@@ -14,7 +14,7 @@ module.exports = {
 		var paramValues = req.body.paramValue;
 		var plen = paramKeys.length;
 		var i;
-		
+
 		for(i=0; i < plen; i++){
 			var pkey = paramKeys[i];
 			var pval = paramValues[i];
@@ -24,8 +24,21 @@ module.exports = {
 		res.json(returnObject);
 	},
 	decrypt: function(req, res) {
-		var decrypted_param = ProcessService.decrypt(req.body.key, req.body.param);
-		res.json(encrypted_param);
+		var returnObject = {};
+		var decryptKey = req.body.key; 
+		var paramToDecrypt = req.body;
+		var paramKeys = req.body.paramKey;
+		var paramValues = req.body.paramValue;
+		var plen = paramKeys.length;
+		var i;
+		
+		for(i=0; i < plen; i++){
+			var pkey = paramKeys[i];
+			var pval = paramValues[i];
+
+			returnObject[pkey] = ProcessService.decrypt(req.body.decryption_key, pval);
+		}
+		res.json(returnObject);
 	}
 };
 

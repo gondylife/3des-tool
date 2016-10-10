@@ -41,7 +41,8 @@ module.exports.routes = {
   '/decrypt': {
     view: 'static/decrypt'
   },
-  '/process/encrypt': 'ProcessController.encrypt'
+  '/process/encrypt': 'ProcessController.encrypt',
+  '/process/decrypt': 'ProcessController.decrypt'
 
   /***************************************************************************
   *                                                                          *

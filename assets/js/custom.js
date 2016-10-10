@@ -29,7 +29,8 @@ $(document).ready(function() {
         $(this).parent("div").remove();
         x--;
     });
-    $("#form_params").submit(function(e) {
+
+    $("#form_params_encrypt").submit(function(e) {
         e.preventDefault();
         $("#loadingdiv").show();
 
@@ -37,7 +38,7 @@ $(document).ready(function() {
 			$.ajax({
 			    url: '/process/encrypt', 
 			    method: 'post',
-			    data: $('#form_params').serializeObject(), 
+			    data: $('#form_params_encrypt').serializeObject(), 
 			    success: function(data, status) {
 			    	myModal.find("#encryptedPayload").html(JSON.stringify(data, null, 4));
 			    	myModal.modal("show");
@@ -49,9 +50,37 @@ $(document).ready(function() {
         }
         encryptParam(1, 2);
     });
-    $("#copyButton").on("click", function(e) {
+
+    $("#copyButtonEncrypt").on("click", function(e) {
         e.preventDefault();
         $("#encryptedPayload").select();
+		document.execCommand('copy');
+    });
+
+    $("#form_params_decrypt").submit(function(e) {
+        e.preventDefault();
+        $("#loadingdiv").show();
+
+        function decryptParam (key, param) {
+			$.ajax({
+			    url: '/process/decrypt', 
+			    method: 'post',
+			    data: $('#form_params_decrypt').serializeObject(), 
+			    success: function(data, status) {
+			    	myModal.find("#decryptedPayload").html(JSON.stringify(data, null, 4));
+			    	myModal.modal("show");
+                	setTimeout(function() {
+                    	$("#loadingdiv").hide();
+                	}, 2000);
+			    }
+			});
+        }
+        decryptParam(1, 2);
+    });
+
+    $("#copyButtonDecrypt").on("click", function(e) {
+        e.preventDefault();
+        $("#decryptedPayload").select();
 		document.execCommand('copy');
     });
 });
