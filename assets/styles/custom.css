@@ -34,7 +34,6 @@ body {
 	margin: 0 auto 20px;
 	margin-top: 20px;
 	background-color: @lightGray;
-	border: 1px solid @green;
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
