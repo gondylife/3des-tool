@@ -22,7 +22,7 @@ $(document).ready(function() {
         $("#format1").removeAttr("checked");
         $("#format2").attr("checked", "");
         $("#keyvalue").hide();
-        $("#raw").show();
+        $("#form_params_raw_encrypt").show();
         $("#rawParamU").html(JSON.stringify(uJsonSample, null, 4));
         $("#rawParamE").html(JSON.stringify(eJsonSample, null, 4));
     });
@@ -30,7 +30,7 @@ $(document).ready(function() {
     $("#format1").on("click", function() {
         $("#format2").removeAttr("checked");
         $("#format1").attr("checked", "");
-        $("#raw").hide();
+        $("#form_params_raw_encrypt").hide();
         $("#keyvalue").show();
     });
 

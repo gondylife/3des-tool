@@ -48,14 +48,12 @@
 		<input type="submit" class="btn btn-lg btn-primary btn-block" value="Encrypt" />
 	</div>
 </form>
-<form method="POST" id="form_params_raw_encrypt" class="form-card" style="margin-top: -50px;">
-	<div id="raw" style="display: none;">
-    	<div class="form-group">
-    	  	<textarea class="form-control" rows="12" id="rawParamU" placeholder="Insert JSON Payload" required>
-    	  	</textarea>
-    	</div>
-		<label class="control-label" style="padding-top: 30px;">Encryption Key</label>
-		<input type="text" placeholder="Insert Encryption Key" class="form-control raw_encryption_key" name="raw_encryption_key" required />
-		<input type="submit" class="btn btn-lg btn-primary btn-block" id="raw_encrypt" value="Encrypt" />
+<form method="POST" id="form_params_raw_encrypt" class="form-card" style="margin-top: -50px; display: none;">
+	<div class="form-group">
+	  	<textarea class="form-control" rows="12" id="rawParamU" placeholder="Insert JSON Payload" required>
+	  	</textarea>
 	</div>
+	<label class="control-label" style="padding-top: 30px;">Encryption Key</label>
+	<input type="text" placeholder="Insert Encryption Key" class="form-control raw_encryption_key" name="raw_encryption_key" required />
+	<input type="submit" class="btn btn-lg btn-primary btn-block" id="raw_encrypt" value="Encrypt" />
 </form>
