@@ -8,7 +8,7 @@
       		</div>
 	      	<div class="modal-body">
 	        	<div class="form-group">
-	        	  	<textarea class="form-control" rows="5" id="decryptedPayload"></textarea>
+	        	  	<textarea class="form-control" rows="12" id="decryptedPayload"></textarea>
 	        	</div>
 	      	</div>
 	      	<div class="modal-footer">
@@ -19,20 +19,43 @@
   	</div>
 </div>
 <form method="POST" id="form_params_decrypt" class="form-card">
-	<h2 class="form-card-heading">Decrypt Here...</h2>
-	<h3 class="add_param" style="padding-bottom: 30px; width: 30px; cursor: pointer; float: right;" title="Add More Parameters"><i class="fa fa-plus"></i></h3>
-	<div class="params">
-		<div class="form-group">
-			<label class="control-label" style="padding-top: 50px;">#1</label>
-		    <div>
-		      	<input type="text" placeholder="Insert Parameter Key" class="form-control param_key" name="paramKey[]" required />
-		    </div>
-		    <div>
-		      	<input type="text" placeholder="Insert Parameter Value" class="form-control param_value" name="paramValue[]" required />
-		    </div>
+	<div>
+		<h2 class="form-card-heading">Decrypt here...</h2>
+		<div>
+			<label class="radio-inline">
+				<input type="radio" name="format" id="format1" checked /> Key-Value
+			</label>
+			<label class="radio-inline">
+			  	<input type="radio" name="format" id="format2" /> JSON Payload
+			</label>
 		</div>
 	</div>
-	<label class="control-label" style="padding-top: 50px;">Decryption Key</label>
-	<input type="text" placeholder="Insert Decryption Key" class="form-control decryption_key" name="decryption_key" required />
-	<input type="submit" class="btn btn-lg btn-primary btn-block" value="Decrypt" />
+	<div id="keyvalue" style="">
+		<h3 class="add_param" style="padding-bottom: 30px; width: 30px; cursor: pointer; float: right;" title="Add More Parameters"><i class="fa fa-plus"></i></h3>
+		<div class="params">
+			<div class="form-group">
+				<label class="control-label" style="padding-top: 50px;">#1</label>
+			    <div>
+			      	<input type="text" placeholder="Insert Parameter Key" class="form-control param_key" name="paramKey[]" required />
+			    </div>
+			    <div>
+			      	<input type="text" placeholder="Insert Parameter Value" class="form-control param_value" name="paramValue[]" required />
+			    </div>
+			</div>
+		</div>
+		<label class="control-label" style="padding-top: 50px;">Decryption Key</label>
+		<input type="text" placeholder="Insert Decryption Key" class="form-control decryption_key" name="decryption_key" required />
+		<input type="submit" class="btn btn-lg btn-primary btn-block" value="Decrypt" />
+	</div>
+</form>
+<form method="POST" id="form_params_raw_decrypt" class="form-card" style="margin-top: -50px;">
+	<div id="raw" style="display: none;">
+    	<div class="form-group">
+    	  	<textarea class="form-control" rows="12" id="rawParamE" placeholder="Insert Encrypted JSON Payload" required>
+    	  	</textarea>
+    	</div>
+		<label class="control-label" style="padding-top: 30px;">Decryption Key</label>
+		<input type="text" placeholder="Insert Decryption Key" class="form-control raw_decryption_key" name="raw_decryption_key" required />
+		<input type="submit" class="btn btn-lg btn-primary btn-block" id="raw_decrypt" value="Decrypt" />
+	</div>
 </form>

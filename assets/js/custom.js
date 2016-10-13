@@ -16,12 +16,15 @@ $.fn.serializeObject = function() {
 
 $(document).ready(function() {
 	$("#format2").on("click", function() {
-        var jsonSample = {"narration": "Testing", "accountnumber": "1234567890", "bankcode": "123", "passcode": "123456", "amount": "1000.00", "currency": "NGN", "firstname": "Godswill", "lastname": "Okwara", "email": "gondy4life@gmail.com", "transactionreference": "SomeRef123456789"};
+        var uJsonSample = {"narration": "Testing", "accountnumber": "1234567890", "bankcode": "123", "passcode": "123456", "amount": "1000.00", "currency": "NGN", "firstname": "Godswill", "lastname": "Okwara", "email": "gondy4life@gmail.com", "trxref": "SomeRef123456789"};
+        var eJsonSample = {"narration": "xRAklYTFrxc=", "accountnumber": "I1HTWF280Kxb61anv/b+Lw==", "bankcode": "aYeXTxcqw5o=", "passcode": "9Db1jQV5sv0=", "amount": "a8c1WvMFXJI=", "currency": "GCVDc+aMc/Y=", "firstname": "BTzRQecHdWIzDXISUqDCNg==", "lastname": "DTZnm9f28s4=", "email": "50tfL/HIe0D4o41zly0a6DrIVMKzjYAs", "trxref": "yPaWy6/Xg4FJEnHq0EZwNTMNchJSoMI2"}
+
         $("#format1").removeAttr("checked");
         $("#format2").attr("checked", "");
         $("#keyvalue").hide();
         $("#raw").show();
-        $("#rawParam").html(JSON.stringify(jsonSample, null, 4));
+        $("#rawParamU").html(JSON.stringify(uJsonSample, null, 4));
+        $("#rawParamE").html(JSON.stringify(eJsonSample, null, 4));
     });
 
     $("#format1").on("click", function() {
@@ -31,8 +34,11 @@ $(document).ready(function() {
         $("#keyvalue").show();
     });
 
-    $("#rawParam").on("focus", function() {
-    	$("#rawParam").select();
+    $("#rawParamU").on("focus", function() {
+    	$("#rawParamU").select();
+    });
+    $("#rawParamE").on("focus", function() {
+    	$("#rawParamE").select();
     });
 
     var max_fields = 10, wrapper = $(".params"), add_button = $(".add_param"), myModal = $("#myModal");
@@ -56,7 +62,7 @@ $(document).ready(function() {
 
         var data = {};
         data.encryption_key = $(".raw_encryption_key").val().trim();
-        data.jsonparam = JSON.parse(rawParam.value);
+        data.jsonparam = JSON.parse(rawParamU.value);
         data.is_raw = true;
 
         function encryptParamRaw () {
@@ -103,11 +109,37 @@ $(document).ready(function() {
 		document.execCommand('copy');
     });
 
+    $("#form_params_raw_decrypt").submit(function(e) {
+        e.preventDefault();
+        $("#loadingdiv").show();
+
+        var data = {};
+        data.encryption_key = $(".raw_decryption_key").val().trim();
+        data.jsonparam = JSON.parse(rawParamE.value);
+        data.is_raw = true;
+
+        function decryptParamRaw () {
+			$.ajax({
+			    url: '/process/decrypt', 
+			    method: 'post',
+			    data: data, 
+			    success: function(data, status) {
+			    	myModal.find("#decryptedPayload").html(JSON.stringify(data, null, 4));
+			    	myModal.modal("show");
+                	setTimeout(function() {
+                    	$("#loadingdiv").hide();
+                	}, 2000);
+			    }
+			});
+        }
+        decryptParamRaw();
+    });
+
     $("#form_params_decrypt").submit(function(e) {
         e.preventDefault();
         $("#loadingdiv").show();
 
-        function decryptParam (key, param) {
+        function decryptParam () {
 			$.ajax({
 			    url: '/process/decrypt', 
 			    method: 'post',
@@ -121,7 +153,7 @@ $(document).ready(function() {
 			    }
 			});
         }
-        decryptParam(key, param);
+        decryptParam();
     });
 
     $("#copyButtonDecrypt").on("click", function(e) {
