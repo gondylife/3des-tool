@@ -20,7 +20,7 @@ module.exports = {
 			var plen = paramKeys.length;
 			var i;
 
-			for(i=0; i < plen; i++){
+			for (i=0; i < plen; i++) {
 				var pkey = paramKeys[i];
 				var pval = paramValues[i];
 
@@ -57,7 +57,7 @@ module.exports = {
 			var plen = paramKeys.length;
 			var i;
 			
-			for(i=0; i < plen; i++){
+			for (i=0; i < plen; i++) {
 				var pkey = paramKeys[i];
 				var pval = paramValues[i];
 
