@@ -15,6 +15,26 @@ $.fn.serializeObject = function() {
 };
 
 $(document).ready(function() {
+	$("#format2").on("click", function() {
+        var jsonSample = {"narration": "Testing", "accountnumber": "1234567890", "bankcode": "123", "passcode": "123456", "amount": "1000.00", "currency": "NGN", "firstname": "Godswill", "lastname": "Okwara", "email": "gondy4life@gmail.com", "transactionreference": "SomeRef123456789"};
+        $("#format1").removeAttr("checked");
+        $("#format2").attr("checked", "");
+        $("#keyvalue").hide();
+        $("#raw").show();
+        $("#rawParam").html(JSON.stringify(jsonSample, null, 4));
+    });
+
+    $("#format1").on("click", function() {
+        $("#format2").removeAttr("checked");
+        $("#format1").attr("checked", "");
+        $("#raw").hide();
+        $("#keyvalue").show();
+    });
+
+    $("#rawParam").on("focus", function() {
+    	$("#rawParam").select();
+    });
+
     var max_fields = 10, wrapper = $(".params"), add_button = $(".add_param"), myModal = $("#myModal");
     var x = 1;
     $(add_button).click(function(e) {
@@ -30,11 +50,37 @@ $(document).ready(function() {
         x--;
     });
 
+    $("#form_params_raw_encrypt").submit(function(e) {
+        e.preventDefault();
+        $("#loadingdiv").show();
+
+        var data = {};
+        data.encryption_key = $(".raw_encryption_key").val().trim();
+        data.jsonparam = JSON.parse(rawParam.value);
+        data.is_raw = true;
+
+        function encryptParamRaw () {
+			$.ajax({
+			    url: '/process/encrypt', 
+			    method: 'post',
+			    data: data, 
+			    success: function(data, status) {
+			    	myModal.find("#encryptedPayload").html(JSON.stringify(data, null, 4));
+			    	myModal.modal("show");
+                	setTimeout(function() {
+                    	$("#loadingdiv").hide();
+                	}, 2000);
+			    }
+			});
+        }
+        encryptParamRaw();
+    });
+
     $("#form_params_encrypt").submit(function(e) {
         e.preventDefault();
         $("#loadingdiv").show();
 
-        function encryptParam (key, param) {
+        function encryptParam () {
 			$.ajax({
 			    url: '/process/encrypt', 
 			    method: 'post',
@@ -48,7 +94,7 @@ $(document).ready(function() {
 			    }
 			});
         }
-        encryptParam(1, 2);
+        encryptParam();
     });
 
     $("#copyButtonEncrypt").on("click", function(e) {
@@ -75,7 +121,7 @@ $(document).ready(function() {
 			    }
 			});
         }
-        decryptParam(1, 2);
+        decryptParam(key, param);
     });
 
     $("#copyButtonDecrypt").on("click", function(e) {

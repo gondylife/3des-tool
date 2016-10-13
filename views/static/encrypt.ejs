@@ -8,7 +8,7 @@
       		</div>
 	      	<div class="modal-body">
 	        	<div class="form-group">
-	        	  	<textarea class="form-control" rows="5" id="encryptedPayload"></textarea>
+	        	  	<textarea class="form-control" rows="12" id="encryptedPayload"></textarea>
 	        	</div>
 	      	</div>
 	      	<div class="modal-footer">
@@ -19,20 +19,43 @@
   	</div>
 </div>
 <form method="POST" id="form_params_encrypt" class="form-card">
-	<h2 class="form-card-heading">Encrypt here...</h2>
-	<h3 class="add_param" style="padding-bottom: 30px; width: 30px; cursor: pointer; float: right;" title="Add More Parameters"><i class="fa fa-plus"></i></h3>
-	<div class="params">
-		<div class="form-group">
-			<label class="control-label" style="padding-top: 50px;">#1</label>
-		    <div>
-		      	<input type="text" placeholder="Insert Parameter Key" class="form-control param_key" name="paramKey[]" required />
-		    </div>
-		    <div>
-		      	<input type="text" placeholder="Insert Parameter Value" class="form-control param_value" name="paramValue[]" required />
-		    </div>
+	<div>
+		<h2 class="form-card-heading">Encrypt here...</h2>
+		<div>
+			<label class="radio-inline">
+				<input type="radio" name="format" id="format1" checked /> Key-Value
+			</label>
+			<label class="radio-inline">
+			  	<input type="radio" name="format" id="format2" /> Raw
+			</label>
 		</div>
 	</div>
-	<label class="control-label" style="padding-top: 50px;">Encryption Key</label>
-	<input type="text" placeholder="Insert Encryption Key" class="form-control encryption_key" name="encryption_key" required />
-	<input type="submit" class="btn btn-lg btn-primary btn-block" value="Encrypt" />
+	<div id="keyvalue" style="">
+		<h3 class="add_param" style="padding-bottom: 30px; width: 30px; cursor: pointer; float: right;" title="Add More Parameters"><i class="fa fa-plus"></i></h3>
+		<div class="params">
+			<div class="form-group">
+				<label class="control-label" style="padding-top: 50px;">#1</label>
+			    <div>
+			      	<input type="text" placeholder="Insert Parameter Key" class="form-control param_key" name="paramKey[]" required />
+			    </div>
+			    <div>
+			      	<input type="text" placeholder="Insert Parameter Value" class="form-control param_value" name="paramValue[]" required />
+			    </div>
+			</div>
+		</div>
+		<label class="control-label" style="padding-top: 30px;">Encryption Key</label>
+		<input type="text" placeholder="Insert Encryption Key" class="form-control encryption_key" name="encryption_key" required />
+		<input type="submit" class="btn btn-lg btn-primary btn-block" value="Encrypt" />
+	</div>
+</form>
+<form method="POST" id="form_params_raw_encrypt" class="form-card" style="margin-top: -50px;">
+	<div id="raw" style="display: none;">
+    	<div class="form-group">
+    	  	<textarea class="form-control" rows="12" id="rawParam" placeholder="Insert Raw JSON Payload" required>
+    	  	</textarea>
+    	</div>
+		<label class="control-label" style="padding-top: 30px;">Encryption Key</label>
+		<input type="text" placeholder="Insert Encryption Key" class="form-control raw_encryption_key" name="raw_encryption_key" required />
+		<input type="submit" class="btn btn-lg btn-primary btn-block" id="raw_encrypt" value="Encrypt" />
+	</div>
 </form>
